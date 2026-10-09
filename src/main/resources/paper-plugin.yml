@@ -1,0 +1,28 @@
+# LastFrame - death replays. Made by skilledseeker (skilledmc on Discord).
+name: LastFrame
+version: '${project.version}'
+main: dev.skilledseeker.lastframe.LastFrame
+bootstrapper: dev.skilledseeker.lastframe.ReplayBootstrap
+api-version: '1.21'
+description: Death replays - watch the fight that killed you, from any angle. Made by skilledseeker (skilledmc on Discord).
+authors: [skilledseeker]
+website: 'Discord: skilledmc'
+
+# Both are optional third-party hooks. UnstableCore is asked whether a death was a duel; ViaVersion
+# tells which client version a player is on. Neither is needed for the plugin to work.
+dependencies:
+  server:
+    UnstableCore:
+      load: BEFORE
+      required: false
+    ViaVersion:
+      load: BEFORE
+      required: false
+
+permissions:
+  lastframe.admin:
+    description: /replay reload and /replay selftest.
+    default: op
+  lastframe.bypass:
+    description: Run any command while watching a replay.
+    default: op

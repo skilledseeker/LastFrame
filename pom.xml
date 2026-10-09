@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  LastFrame - death replays for Paper. Watch the fight that killed you, from any angle.
+  Made by skilledseeker (skilledmc on Discord).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>dev.skilledseeker</groupId>
+  <artifactId>LastFrame</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>LastFrame</name>
+  <description>Death replays for Paper: watch the fight that killed you, from any angle. Made by skilledseeker (skilledmc on Discord).</description>
+
+  <developers>
+    <developer>
+      <id>skilledseeker</id>
+      <name>skilledseeker</name>
+      <roles>
+        <role>author</role>
+      </roles>
+      <properties>
+        <discord>skilledmc</discord>
+      </properties>
+    </developer>
+  </developers>
+
+  <properties>
+    <java.version>21</java.version>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>papermc</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <!-- Mannequins need Paper 1.21.9+; built against 1.21.11. -->
+    <dependency>
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>1.21.11-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>LastFrame-${project.version}</finalName>
+    <resources>
+      <!-- Only the plugin descriptor needs ${project.version}; everything else is copied as is. -->
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>paper-plugin.yml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>paper-plugin.yml</exclude>
+        </excludes>
+      </resource>
+    </resources>
+  </build>
+</project>

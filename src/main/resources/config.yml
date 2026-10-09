@@ -1,0 +1,123 @@
+# LastFrame - death replays. Made by skilledseeker (skilledmc on Discord).
+#
+# The server always keeps the last few seconds of every fight in memory. When a player is killed,
+# the fight plays again for them as a killcam: through the killer's eyes, by itself, sneak to skip
+# (see killcam: below). With the killcam off they are offered the replay instead and watch it if
+# they want, flying around it as a spectator. Nothing is ever written to disk.
+#
+# /replay reload applies everything here except quick-actions-key, which needs a restart.
+
+enabled: true
+
+record:
+  # Worlds to record. Empty = every world except the ones in excluded-worlds.
+  worlds: []
+  excluded-worlds:
+    - spawn
+  # How much of the past is kept in memory, in seconds. Always at least clip.seconds.
+  buffer-seconds: 12
+
+clip:
+  # Longest replay, in seconds.
+  seconds: 10
+  # Players within this many blocks of the victim are part of the replay.
+  radius: 40
+  # Start this many seconds before the victim's first hit (taken or dealt) instead of always
+  # showing the full length. 0 always shows the full length.
+  lead-in-seconds: 3
+  # Only replay deaths caused by another player.
+  only-player-kills: true
+  # Replay duel deaths too. Only matters when the UnstableCore plugin is installed.
+  include-duels: false
+
+# BO3-style killcam. The replay plays by itself after every death: the player is respawned, put
+# inside the killer's head and shown the kill. Sneaking skips it; the Quick Actions key still opens
+# the full controls (free camera, pause, slow motion...). Off: the player is offered the replay
+# instead (offer: below) and only watches it if they click.
+killcam:
+  enabled: true
+  # Leave the death screen by itself so the killcam starts right after the death. Off: it starts
+  # when the player presses Respawn.
+  auto-respawn: true
+  # How long the death screen stays before that automatic respawn, in seconds.
+  respawn-delay-seconds: 1
+  # Start inside the killer's head. Off: the free camera beside the fight.
+  killer-pov: true
+  # Sneaking skips the killcam (while inside someone's eyes). Off: only the controls or /replay skip do.
+  sneak-skips: true
+
+# The offer, used with killcam.enabled off: the replay is offered after the death instead of played.
+offer:
+  # How long the offer stays open after respawning, in seconds.
+  seconds: 10
+  # Drop the replay if the player stays on the death screen longer than this, in seconds.
+  respawn-wait-seconds: 60
+  # Over the death screen, show a menu with Respawn / Watch Replay / Title Screen. Title Screen closes
+  # the menu and leaves the vanilla death screen, whose own Title Screen button disconnects. Players who
+  # respawn some other way still get the chat offer.
+  death-screen-menu: true
+
+playback:
+  # Slow down the last moments before the kill.
+  slow-motion: false
+  slow-motion-seconds: 1.5
+  slow-motion-speed: 0.35
+  # How far the camera may fly from the fight, in blocks.
+  max-distance: 48
+  # Seconds the last frame stays before the replay closes on its own.
+  end-hold-seconds: 5
+  # Hide live players, item drops and live projectiles from the viewer while they watch,
+  # so only the replay is on screen. Hidden players also leave the viewer's tab list
+  # for those few seconds.
+  hide-live-world: true
+  # Floating damage numbers on every hit.
+  damage-numbers: true
+  # Throw and impact sounds of projectiles (bows, pearls, wind charges...). Off: only the hits are heard.
+  projectile-sounds: false
+
+clients:
+  # Oldest client protocol that can watch (773 = Java 1.21.9, the first with mannequins).
+  # Needs ViaVersion to tell versions apart; without it every Java player can watch.
+  min-protocol: 773
+  # Bedrock (Geyser/Floodgate) players. Off until mannequins are confirmed on Bedrock.
+  bedrock: false
+
+# Bind the replay controls to the vanilla "Quick Actions" key (G by default).
+# Read once at startup: changing it needs a restart.
+quick-actions-key: true
+
+# Colours use & codes and &#rrggbb. {key} shows the player's own Quick Actions key.
+messages:
+  prefix: "&8[&cLastFrame&8] "
+  offer: "&c☠ &fYou were killed by {killer}&f. "
+  offer-button: "&a&l[▶ WATCH REPLAY]"
+  offer-hover: "&7Watch the last &f{seconds}s &7of the fight\n&7from any angle."
+  offer-key-hint: " &7or press &f{key}"
+  offer-bar: "&a▶ &fDeath replay ready &8• &7click it in chat or press &f{key} &8• &e{seconds}s"
+  offer-bar-no-key: "&a▶ &fDeath replay ready &8• &7click it in chat &8• &e{seconds}s"
+  offer-dropped: "&7Replay discarded: you're in a fight."
+  death-title: "&c&lYou Died!"
+  death-cause: "&fKilled by &c{killer}"
+  death-respawn: "Respawn"
+  death-watch: "&a▶ Watch Replay"
+  death-title-screen: "Title Screen"
+  no-replay: "&cYou don't have a replay to watch right now."
+  not-watching: "&cYou aren't watching a replay."
+  not-now: "&cYou can't watch a replay right now."
+  unsupported-client: "&cReplays need Minecraft Java 1.21.9 or newer."
+  start-title: "&c&lREPLAY"
+  start-subtitle: "&7Fly around &8• &7left-click a player to see through their eyes"
+  killcam-title: "&c&lKILLCAM"
+  killcam-subtitle: "&7Killed by &c{killer}"
+  bar-killcam: "&c● KILLCAM &8• &f{killer} &8• &7{time}&8/&7{total} &8• &esneak &7or &e{key} &7to skip"
+  bar-killcam-no-sneak: "&c● KILLCAM &8• &f{killer} &8• &7{time}&8/&7{total} &8• &e{key} &7to skip"
+  bar-playing: "&c▶ REPLAY &8• &f{time}&7/{total} &8• &e{speed} &8• &7{key} controls"
+  bar-paused: "&e⏸ PAUSED &8• &f{time}&7/{total} &8• &7{key} controls"
+  bar-ended: "&7Replay over &8• &7closing in &f{seconds}s &8• &7{key} to watch again"
+  end-title: "&c☠ {killer}"
+  end-subtitle: "&7had &c{health}❤ &7left &8• &7you hit &f{your_hits} &8• &7they hit &f{their_hits}"
+  pov-missing: "&cThat player isn't in the replay at this moment."
+  blocked-command: "&cLeave the replay first: &f/replay skip"
+  toggled-off: "&7Death replays are now &cOFF&7. &f/replay toggle &7turns them back on."
+  toggled-on: "&7Death replays are now &aON&7."
+  reloaded: "&aLastFrame reloaded."
